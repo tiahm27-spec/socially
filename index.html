@@ -35,79 +35,14 @@
         <p>Share what's happening.</p>
 
         <textarea placeholder="What's on your mind?"></textarea>
-      </div>
+  <div class="post-buttons">
+  <label class="upload-button">
+    📷 Photo
+    <input type="file" id="photoInput" accept="image/*" multiple>
+  </label>
 
-      <div class="card post">
-        <div class="post-user">
-          <div class="avatar">M</div>
-          <div>
-            <strong>mari</strong>
-            <p>@mari</p>
-          </div>
-        </div>
+  <button type="button">🎥 Video</button>
+  <button type="button">Post</button>
+</div>
 
-        <p>Welcome to my Socially page! 💜</p>
-
-        <div class="reactions">
-          ❤️ Like
-          💬 Comment
-          ↗️ Share
-        </div>
-      </div>
-    </section>
-
-
-    <!-- CHATS -->
-    <section id="chats" class="page">
-      <div class="card">
-        <h2>Chats 💬</h2>
-        <p>Your group chats will appear here.</p>
-
-        <button>＋ New group chat</button>
-      </div>
-    </section>
-
-
-    <!-- ROOMS -->
-    <section id="rooms" class="page">
-      <div class="card">
-        <h2>Rooms 🏠</h2>
-        <p>Create a room and invite people.</p>
-
-        <button>＋ Create room</button>
-      </div>
-    </section>
-
-
-    <!-- CANVAS -->
-    <section id="canvas" class="page">
-      <div class="card">
-        <h2>Collaborative Canvas 🎨</h2>
-        <p>Draw together with your friends.</p>
-
-        <div class="canvas-area">
-          Your canvas will go here.
-        </div>
-      </div>
-    </section>
-
-
-    <!-- PROFILE -->
-    <section id="profile" class="page">
-      <div class="card profile-card">
-        <div class="big-avatar">M</div>
-
-        <h2>mari</h2>
-        <p>@mari</p>
-
-        <p>Making memories on Socially 💜</p>
-
-        <button>Edit profile</button>
-      </div>
-    </section>
-
-  </main>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<div id="photoPreview"></div>
