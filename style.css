@@ -188,3 +188,6 @@ small {
 .profile-card {
   text-align: center;
 }
+.upload-button input {
+  display: none;
+}
