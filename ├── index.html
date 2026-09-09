@@ -8,8 +8,9 @@
 </head>
 
 <body>
-  <header class="topbar">
-    <div class="logo">socially</div>
+
+  <header>
+    <h1>socially</h1>
 
     <nav>
       <button onclick="showPage('home')">Home</button>
@@ -19,7 +20,7 @@
       <button onclick="showPage('profile')">Profile</button>
     </nav>
 
-    <div class="online-status">
+    <div class="online">
       <span class="online-dot"></span>
       Online
     </div>
@@ -27,71 +28,85 @@
 
   <main>
 
+    <!-- HOME -->
     <section id="home" class="page active">
-      <div class="welcome">
-        <h1>Welcome to Socially ✨</h1>
-        <p>Share something. Talk to people. Create together.</p>
-      </div>
+      <div class="card">
+        <h2>Welcome to Socially 👋</h2>
+        <p>Share what's happening.</p>
 
-      <div class="create-post">
-        <textarea placeholder="What's happening?"></textarea>
-        <div class="post-actions">
+        <textarea placeholder="What's on your mind?"></textarea>
+
+        <div class="post-buttons">
           <button>📷 Photo</button>
           <button>🎥 Video</button>
-          <button class="post-button">Post</button>
+          <button>Post</button>
         </div>
       </div>
 
-      <div class="post">
+      <div class="card post">
         <div class="post-user">
           <div class="avatar">M</div>
           <div>
             <strong>mari</strong>
-            <small>@mari · just now</small>
+            <p>@mari</p>
           </div>
         </div>
 
-        <p>Welcome to my new Socially page! 🌟</p>
+        <p>Welcome to my Socially page! 💜</p>
 
-        <div class="post-reactions">
-          <button>♡ Like</button>
-          <button>💬 Comment</button>
-          <button>↗ Share</button>
+        <div class="reactions">
+          ❤️ Like
+          💬 Comment
+          ↗️ Share
         </div>
       </div>
     </section>
 
+
+    <!-- CHATS -->
     <section id="chats" class="page">
-      <h1>Chats 💬</h1>
-      <div class="empty-card">
-        <h2>Your conversations</h2>
-        <p>Group chats and messages will live here.</p>
-        <button>+ New group chat</button>
+      <div class="card">
+        <h2>Chats 💬</h2>
+        <p>Your group chats will appear here.</p>
+
+        <button>＋ New group chat</button>
       </div>
     </section>
 
+
+    <!-- ROOMS -->
     <section id="rooms" class="page">
-      <h1>Rooms 🪐</h1>
-      <div class="empty-card">
-        <h2>Create a room</h2>
-        <p>Make a space, decorate it, and invite people.</p>
-        <button>+ Create room</button>
+      <div class="card">
+        <h2>Rooms 🏠</h2>
+        <p>Create a room and invite people.</p>
+
+        <button>＋ Create room</button>
       </div>
     </section>
 
+
+    <!-- CANVAS -->
     <section id="canvas" class="page">
-      <h1>Collaborative Canvas 🎨</h1>
-      <div class="canvas-placeholder">
-        <p>Draw together here.</p>
+      <div class="card">
+        <h2>Collaborative Canvas 🎨</h2>
+        <p>Draw together with your friends.</p>
+
+        <div class="canvas-area">
+          Your canvas will go here.
+        </div>
       </div>
     </section>
 
+
+    <!-- PROFILE -->
     <section id="profile" class="page">
-      <div class="profile-card">
-        <div class="profile-avatar">M</div>
-        <h1>mari</h1>
+      <div class="card profile-card">
+        <div class="big-avatar">M</div>
+
+        <h2>mari</h2>
         <p>@mari</p>
-        <p>Welcome to my Socially profile! ✨</p>
+
+        <p>Making memories on Socially 💜</p>
 
         <button>Edit profile</button>
       </div>
@@ -100,5 +115,6 @@
   </main>
 
   <script src="app.js"></script>
+
 </body>
 </html>
