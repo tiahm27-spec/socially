@@ -191,3 +191,19 @@ small {
 .upload-button input {
   display: none;
 }
+.photo-slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px 0;
+}
+
+.photo-slider img {
+  width: 85%;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 18px;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
