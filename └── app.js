@@ -46,3 +46,19 @@ postButton.addEventListener("click", function () {
 
   postBox.value = "";
 });
+const photoInput = document.getElementById("photoInput");
+const photoPreview = document.getElementById("photoPreview");
+
+photoInput.addEventListener("change", function () {
+  const file = photoInput.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  const image = document.createElement("img");
+  image.src = URL.createObjectURL(file);
+
+  photoPreview.innerHTML = "";
+  photoPreview.appendChild(image);
+});
