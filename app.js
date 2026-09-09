@@ -13,27 +13,31 @@ const postBox = document.querySelector("textarea");
 const photoInput = document.getElementById("photoInput");
 const photoPreview = document.getElementById("photoPreview");
 
-let selectedPhoto = null;
+let selectedPhotos = [];
 
 photoInput.addEventListener("change", function () {
-  const file = photoInput.files[0];
+  selectedPhotos = Array.from(photoInput.files);
 
-  if (!file) return;
-
-  selectedPhoto = URL.createObjectURL(file);
   photoPreview.innerHTML = "";
 
-  const image = document.createElement("img");
-  image.src = selectedPhoto;
-  image.className = "post-image";
+  if (selectedPhotos.length === 0) return;
 
-  photoPreview.appendChild(image);
+  const preview = document.createElement("div");
+  preview.className = "photo-slider";
+
+  selectedPhotos.forEach(file => {
+    const image = document.createElement("img");
+    image.src = URL.createObjectURL(file);
+    preview.appendChild(image);
+  });
+
+  photoPreview.appendChild(preview);
 });
 
 postButton.addEventListener("click", function () {
   const text = postBox.value.trim();
 
-  if (text === "" && !selectedPhoto) {
+  if (text === "" && selectedPhotos.length === 0) {
     alert("Write something or choose a photo first!");
     return;
   }
@@ -57,11 +61,17 @@ postButton.addEventListener("click", function () {
     newPost.appendChild(postText);
   }
 
-  if (selectedPhoto) {
-    const image = document.createElement("img");
-    image.src = selectedPhoto;
-    image.className = "post-image";
-    newPost.appendChild(image);
+  if (selectedPhotos.length > 0) {
+    const slider = document.createElement("div");
+    slider.className = "photo-slider";
+
+    selectedPhotos.forEach(file => {
+      const image = document.createElement("img");
+      image.src = URL.createObjectURL(file);
+      slider.appendChild(image);
+    });
+
+    newPost.appendChild(slider);
   }
 
   const reactions = document.createElement("div");
@@ -75,5 +85,5 @@ postButton.addEventListener("click", function () {
   postBox.value = "";
   photoInput.value = "";
   photoPreview.innerHTML = "";
-  selectedPhoto = null;
+  selectedPhotos = [];
 });
