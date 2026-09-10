@@ -207,3 +207,24 @@ small {
   flex-shrink: 0;
   scroll-snap-align: center;
 }
+.photo-slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
+.photo-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.photo-slider img {
+  width: 90%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 18px;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
