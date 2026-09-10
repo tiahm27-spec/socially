@@ -9,40 +9,101 @@
 
 <body>
 
-  <header>
-    <h1>socially</h1>
+<header>
+  <h1>socially</h1>
 
-    <nav>
-      <button onclick="showPage('home')">Home</button>
-      <button onclick="showPage('chats')">Chats</button>
-      <button onclick="showPage('rooms')">Rooms</button>
-      <button onclick="showPage('canvas')">Canvas</button>
-      <button onclick="showPage('profile')">Profile</button>
-    </nav>
+  <nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('chats')">Chats</button>
+    <button onclick="showPage('rooms')">Rooms</button>
+    <button onclick="showPage('canvas')">Canvas</button>
+    <button onclick="showPage('profile')">Profile</button>
+  </nav>
 
-    <div class="online">
-      <span class="online-dot"></span>
-      Online
+  <div class="online">
+    <span class="online-dot"></span>
+    Online
+  </div>
+</header>
+
+<main>
+
+<section id="home" class="page active">
+
+  <div class="card">
+    <h2>Welcome to Socially 👋</h2>
+    <p>Share what's happening.</p>
+
+    <textarea placeholder="What's on your mind?"></textarea>
+
+    <div class="post-buttons">
+      <label class="upload-button">
+        📷 Photo
+        <input type="file" id="photoInput" accept="image/*" multiple>
+      </label>
+
+      <button type="button">🎥 Video</button>
+      <button type="button">Post</button>
     </div>
-  </header>
 
-  <main>
+    <div id="photoPreview"></div>
+  </div>
 
-    <!-- HOME -->
-    <section id="home" class="page active">
-      <div class="card">
-        <h2>Welcome to Socially 👋</h2>
-        <p>Share what's happening.</p>
+  <div class="card post">
+    <div class="post-user">
+      <div class="avatar">M</div>
+      <div>
+        <strong>mari</strong>
+        <p>@mari</p>
+      </div>
+    </div>
 
-        <textarea placeholder="What's on your mind?"></textarea>
-        <div class="post-buttons">
-  <label class="upload-button">
-    📷 Photo
-    <input type="file" id="photoInput" accept="image/*" multiple>
-  </label>
+    <p>Welcome to my Socially page! 💜</p>
 
-  <button type="button">🎥 Video</button>
-  <button type="button">Post</button>
-</div>
+    <div class="reactions">
+      ❤️ Like &nbsp; 💬 Comment &nbsp; ↗️ Share
+    </div>
+  </div>
 
-<div id="photoPreview"></div>
+</section>
+
+<section id="chats" class="page">
+  <div class="card">
+    <h2>Chats 💬</h2>
+    <p>Your group chats will appear here.</p>
+    <button>＋ New group chat</button>
+  </div>
+</section>
+
+<section id="rooms" class="page">
+  <div class="card">
+    <h2>Rooms 🏠</h2>
+    <p>Create a room and invite people.</p>
+    <button>＋ Create room</button>
+  </div>
+</section>
+
+<section id="canvas" class="page">
+  <div class="card">
+    <h2>Collaborative Canvas 🎨</h2>
+    <p>Draw together with your friends.</p>
+    <div class="canvas-area">Your canvas will go here.</div>
+  </div>
+</section>
+
+<section id="profile" class="page">
+  <div class="card profile-card">
+    <div class="big-avatar">M</div>
+    <h2>mari</h2>
+    <p>@mari</p>
+    <p>Making memories on Socially 💜</p>
+    <button>Edit profile</button>
+  </div>
+</section>
+
+</main>
+
+<script src="app.js"></script>
+
+</body>
+</html>
