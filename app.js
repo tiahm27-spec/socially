@@ -87,3 +87,20 @@ postButton.addEventListener("click", function () {
   photoPreview.innerHTML = "";
   selectedPhotos = [];
 });
+function likePost(button) {
+  const likes = button.nextElementSibling;
+
+  let count = parseInt(likes.textContent);
+
+  if (button.dataset.liked !== "true") {
+    count++;
+    button.dataset.liked = "true";
+    button.textContent = "💜 Liked";
+  } else {
+    count--;
+    button.dataset.liked = "false";
+    button.textContent = "❤️ Like";
+  }
+
+  likes.textContent = count + " likes";
+}
