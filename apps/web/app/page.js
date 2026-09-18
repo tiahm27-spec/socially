@@ -1,35 +1,119 @@
-import React from 'react';
+'use client';
 
-export default function Home() {
+import { useRef, useState, useEffect } from 'react';
+
+export default function CanvasPage() {
+  const canvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [color, setColor] = useState('#8b5cf6');
+  const [brushSize, setBrushSize] = useState(5);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // Set internal canvas resolution to match display size
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 500;
+
+    const ctx = canvas.getContext('2d');
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }, []);
+
+  const startDrawing = (e) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = brushSize;
+    setIsDrawing(true);
+  };
+
+  const draw = (e) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    ctx.closePath();
+    setIsDrawing(false);
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   return (
-    <div style={{ display: 'flex', fontFamily: 'sans-serif', height: '100vh' }}>
-      {/* Sidebar Navigation */}
-      <nav style={{ width: '220px', borderRight: '1px solid #ccc', padding: '20px' }}>
-        <h2>Socially 🌐</h2>
-        <ul style={{ listStyle: 'none', padding: 0, lineHeight: '2.5' }}>
-          <li>🏠 <strong>Home</strong></li>
-          <li>💬 <strong>Chats</strong></li>
-          <li>🖼️ <strong>Rooms</strong></li>
-          <li>🎨 <strong>Canvas</strong></li>
-          <li>👤 <strong>Profile</strong></li>
-        </ul>
-      </nav>
+    <div style={{ padding: '30px', maxWidth: '1000px', margin: '0 auto' }}>
+      <h1 style={{ marginBottom: '8px' }}>Collaborative Canvas 🎨</h1>
+      <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>
+        Express yourself with real-time drawing tools.
+      </p>
 
-      {/* Main Feed Content Area */}
-      <main style={{ flex: 1, padding: '20px', backgroundColor: '#fafafa' }}>
-        <header style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <h3>Feed</h3>
-          <button style={{ padding: '8px 16px', borderRadius: '20px', cursor: 'pointer' }}>+ Create</button>
-        </header>
+      {/* Drawing Toolbar */}
+      <div
+        className="glass-card"
+        style={{
+          padding: '16px',
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '20px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
+          Color:
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            style={{ border: 'none', background: 'none', cursor: 'pointer', height: '36px', width: '36px' }}
+          />
+        </label>
 
-        <div style={{ background: '#fff', border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}>
-          <h4>@artist_dev shared a canvas</h4>
-          <p>Anyone wanna draw right now? Hop into my room! 🎨</p>
-          <button style={{ backgroundColor: '#0070f3', color: '#fff', border: 'none', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer' }}>
-            Join Virtual Room
-          </button>
-        </div>
-      </main>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
+          Size ({brushSize}px):
+          <input
+            type="range"
+            min="1"
+            max="40"
+            value={brushSize}
+            onChange={(e) => setBrushSize(e.target.value)}
+            style={{ cursor: 'pointer' }}
+          />
+        </label>
+
+        <button onClick={clearCanvas} className="btn-primary" style={{ marginLeft: 'auto' }}>
+          Clear Canvas
+        </button>
+      </div>
+
+      {/* HTML5 Interactive Viewport */}
+      <div className="glass-card" style={{ overflow: 'hidden', cursor: 'crosshair' }}>
+        <canvas
+          ref={canvasRef}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onMouseLeave={stopDrawing}
+          style={{ display: 'block', width: '100%', background: 'rgba(0, 0, 0, 0.2)' }}
+        />
+      </div>
     </div>
   );
 }
