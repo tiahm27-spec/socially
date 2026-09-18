@@ -1,126 +1,149 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 
-export default function RoomPage() {
-  const [messages, setMessages] = useState([
-    { id: 1, user: 'Alex', text: 'Welcome to the virtual room! 🚀', time: '10:00 AM' },
-    { id: 2, user: 'Sam', text: 'Hey everyone! Excited to test out this local chat.', time: '10:02 AM' },
-  ]);
-  const [inputText, setInputText] = useState('');
-  const chatEndRef = useRef(null);
+export default function ProfilePage() {
+  const [profile, setProfile] = useState({
+    name: 'Alex Rivera',
+    handle: '@alex_rivera',
+    bio: 'Building awesome local-first web experiences! 🚀',
+    avatarColor: '#8b5cf6',
+  });
 
-  // Auto-scroll to the bottom when a new message arrives
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  const [saved, setSaved] = useState(false);
 
-  const handleSendMessage = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+    setSaved(false);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!inputText.trim()) return;
-
-    const newMessage = {
-      id: Date.now(),
-      user: 'You',
-      text: inputText,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-    setMessages((prev) => [...prev, newMessage]);
-    setInputText('');
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
   };
 
   return (
-    <div style={{ padding: '30px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '8px' }}>Virtual Room Chat 💬</h1>
-      <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>
-        A local interactive space to chat and hang out.
+    <div style={{ padding: '30px', maxWidth: '900px', margin: '0 auto' }}>
+      <h1 style={{ marginBottom: '8px' }}>Profile Customization 👤</h1>
+      <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+        Customize your identity and see live changes instantly.
       </p>
 
-      {/* Chat Container */}
-      <div
-        className="glass-card"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '500px',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Message Feed Viewport */}
-        <div
-          style={{
-            flex: 1,
-            padding: '20px',
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-          }}
-        >
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        {/* Profile Edit Form */}
+        <form onSubmit={handleSubmit} className="glass-card" style={{ padding: '24px' }}>
+          <h2 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Edit Details</h2>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Display Name</label>
+            <input
+              type="text"
+              name="name"
+              value={profile.name}
+              onChange={handleChange}
               style={{
-                alignSelf: msg.user === 'You' ? 'flex-end' : 'flex-start',
-                maxWidth: '70%',
-                background: msg.user === 'You' ? 'var(--accent-color)' : 'var(--bg-secondary)',
-                color: 'var(--text-main)',
-                padding: '10px 14px',
-                borderRadius: '12px',
+                width: '100%',
+                padding: '10px',
+                borderRadius: '8px',
                 border: '1px solid var(--border-color)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-main)',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Handle</label>
+            <input
+              type="text"
+              name="handle"
+              value={profile.handle}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-main)',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Bio</label>
+            <textarea
+              name="bio"
+              rows="3"
+              value={profile.bio}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-main)',
+                resize: 'none',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Avatar Color</label>
+            <input
+              type="color"
+              name="avatarColor"
+              value={profile.avatarColor}
+              onChange={handleChange}
+              style={{ border: 'none', background: 'none', cursor: 'pointer', height: '40px', width: '40px' }}
+            />
+          </div>
+
+          <button type="submit" className="btn-primary" style={{ width: '100%' }}>
+            Save Changes
+          </button>
+
+          {saved && (
+            <p style={{ color: '#10b981', marginTop: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+              ✓ Profile saved locally!
+            </p>
+          )}
+        </form>
+
+        {/* Live Preview Card */}
+        <div>
+          <h2 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Live Preview</h2>
+          <div className="glass-card" style={{ padding: '24px', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                backgroundColor: profile.avatarColor,
+                margin: '0 auto 16px auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '2rem',
+                fontWeight: 'bold',
+                color: '#ffffff',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
               }}
             >
-              <div
-                style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 'bold',
-                  color: msg.user === 'You' ? '#e9d5ff' : 'var(--text-muted)',
-                  marginBottom: '4px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: '12px',
-                }}
-              >
-                <span>{msg.user}</span>
-                <span>{msg.time}</span>
-              </div>
-              <p style={{ margin: 0, wordBreak: 'break-word' }}>{msg.text}</p>
+              {profile.name.charAt(0)}
             </div>
-          ))}
-          <div ref={chatEndRef} />
+            <h3 style={{ margin: '0 0 4px 0' }}>{profile.name || 'Your Name'}</h3>
+            <p style={{ color: 'var(--text-muted)', margin: '0 0 16px 0', fontSize: '0.9rem' }}>
+              {profile.handle || '@handle'}
+            </p>
+            <p style={{ background: 'rgba(0,0,0,0.1)', padding: '12px', borderRadius: '8px', fontSize: '0.95rem' }}>
+              {profile.bio || 'No bio provided yet.'}
+            </p>
+          </div>
         </div>
-
-        {/* Message Input Box */}
-        <form
-          onSubmit={handleSendMessage}
-          style={{
-            display: 'flex',
-            gap: '10px',
-            padding: '16px',
-            background: 'rgba(0, 0, 0, 0.2)',
-            borderTop: '1px solid var(--border-color)',
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Type a message..."
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            style={{
-              flex: 1,
-              padding: '10px 14px',
-              borderRadius: '8px',
-              border: '1px solid var(--border-color)',
-              background: 'var(--bg-primary)',
-              color: 'var(--text-main)',
-              outline: 'none',
-            }}
-          />
-          <button type="submit" className="btn-primary">
-            Send
-          </button>
-        </form>
       </div>
     </div>
   );
