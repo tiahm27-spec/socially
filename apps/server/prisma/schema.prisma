@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User Accounts & Customization
+model User {
+  id           String    @id @default(uuid())
+  username     String    @unique
+  email        String    @unique
+  displayName  String
+  bio          String?
+  profileColor String    @default("#6b46c1")
+  musicTrack   String?
+  createdAt    DateTime  @default(now())
+  
+  posts        Post[]
+  rooms        Room[]
+  messages     Message[]
+}
+
+// Posts & Feed Items
+model Post {
+  id        String   @id @default(uuid())
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+// Virtual Rooms
+model Room {
+  id          String    @id @default(uuid())
+  name        String
+  isLive      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  
+  hostId      String
+  host        User      @relation(fields: [hostId], references: [id])
+  messages    Message[]
+}
+
+// Real-Time Room Messages
+model Message {
+  id        String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id])
+}
