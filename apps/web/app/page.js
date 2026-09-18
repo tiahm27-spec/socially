@@ -1,164 +1,150 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocalStorage } from './useLocalStorage';
 
-export default function HomePage() {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: 'Alex Rivera',
-      handle: '@alex_rivera',
-      content: 'Just launched the local-first setup for Socially! Everything is running super smooth on Next.js. 🚀',
-      tag: 'Development',
-      likes: 4,
-      isLiked: false,
-      timestamp: '2 hours ago',
-    },
-    {
-      id: 2,
-      author: 'Sam Chen',
-      handle: '@sam_c',
-      content: 'Testing out the new canvas drawing tools. Loving the glassmorphism UI theme! ✨',
-      tag: 'Design',
-      likes: 12,
-      isLiked: false,
-      timestamp: '4 hours ago',
-    },
-  ]);
+export default function ProfilePage() {
+  const [profile, setProfile] = useLocalStorage('socially_profile', {
+    name: 'Alex Rivera',
+    handle: '@alex_rivera',
+    bio: 'Building awesome local-first web experiences! 🚀',
+    avatarColor: '#8b5cf6',
+  });
 
-  const [newPostContent, setNewPostContent] = useState('');
-  const [selectedTag, setSelectedTag] = useState('General');
+  const [saved, setSaved] = useState(false);
 
-  const handleCreatePost = (e) => {
-    e.preventDefault();
-    if (!newPostContent.trim()) return;
-
-    const newPost = {
-      id: Date.now(),
-      author: 'You',
-      handle: '@you_local',
-      content: newPostContent,
-      tag: selectedTag,
-      likes: 0,
-      isLiked: false,
-      timestamp: 'Just now',
-    };
-
-    setPosts((prev) => [newPost, ...prev]);
-    setNewPostContent('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+    setSaved(false);
   };
 
-  const toggleLike = (id) => {
-    setPosts((prev) =>
-      prev.map((post) => {
-        if (post.id === id) {
-          return {
-            ...post,
-            likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            isLiked: !post.isLiked,
-          };
-        }
-        return post;
-      })
-    );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
   };
 
   return (
-    <div style={{ padding: '30px', maxWidth: '700px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '8px' }}>Community Feed 🌐</h1>
+    <div style={{ padding: '30px', maxWidth: '900px', margin: '0 auto' }}>
+      <h1 style={{ marginBottom: '8px' }}>Profile Customization 👤</h1>
       <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
-        See what everyone is working on and share your updates.
+        Customize your identity and see live changes instantly.
       </p>
 
-      {/* Post Creator Box */}
-      <form onSubmit={handleCreatePost} className="glass-card" style={{ padding: '20px', marginBottom: '30px' }}>
-        <textarea
-          rows="3"
-          placeholder="What's happening?"
-          value={newPostContent}
-          onChange={(e) => setNewPostContent(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '12px',
-            borderRadius: '8px',
-            border: '1px solid var(--border-color)',
-            background: 'var(--bg-primary)',
-            color: 'var(--text-main)',
-            resize: 'none',
-            marginBottom: '12px',
-          }}
-        />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        {/* Profile Edit Form */}
+        <form onSubmit={handleSubmit} className="glass-card" style={{ padding: '24px' }}>
+          <h2 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Edit Details</h2>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <select
-            value={selectedTag}
-            onChange={(e) => setSelectedTag(e.target.value)}
-            style={{
-              padding: '8px 12px',
-              borderRadius: '6px',
-              border: '1px solid var(--border-color)',
-              background: 'var(--bg-primary)',
-              color: 'var(--text-main)',
-              cursor: 'pointer',
-            }}
-          >
-            <option value="General">General</option>
-            <option value="Development">Development</option>
-            <option value="Design">Design</option>
-            <option value="Showcase">Showcase</option>
-          </select>
-
-          <button type="submit" className="btn-primary">
-            Post Update
-          </button>
-        </div>
-      </form>
-
-      {/* Posts Stream */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {posts.map((post) => (
-          <div key={post.id} className="glass-card" style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <div>
-                <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{post.author}</span>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{post.handle}</span>
-              </div>
-              <span
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '4px 8px',
-                  borderRadius: '12px',
-                  background: 'var(--bg-secondary)',
-                  border: '1px solid var(--border-color)',
-                }}
-              >
-                {post.tag}
-              </span>
-            </div>
-
-            <p style={{ margin: '12px 0', lineHeight: '1.5' }}>{post.content}</p>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{post.timestamp}</span>
-
-              <button
-                onClick={() => toggleLike(post.id)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: post.isLiked ? '#ef4444' : 'var(--text-muted)',
-                  fontWeight: 'bold',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
-                {post.isLiked ? '❤️' : '🤍'} {post.likes}
-              </button>
-            </div>
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Display Name</label>
+            <input
+              type="text"
+              name="name"
+              value={profile.name}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-main)',
+              }}
+            />
           </div>
-        ))}
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Handle</label>
+            <input
+              type="text"
+              name="handle"
+              value={profile.handle}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-main)',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Bio</label>
+            <textarea
+              name="bio"
+              rows="3"
+              value={profile.bio}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '8px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-primary)',
+                color: 'var(--text-main)',
+                resize: 'none',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold' }}>Avatar Color</label>
+            <input
+              type="color"
+              name="avatarColor"
+              value={profile.avatarColor}
+              onChange={handleChange}
+              style={{ border: 'none', background: 'none', cursor: 'pointer', height: '40px', width: '40px' }}
+            />
+          </div>
+
+          <button type="submit" className="btn-primary" style={{ width: '100%' }}>
+            Save Changes
+          </button>
+
+          {saved && (
+            <p style={{ color: '#10b981', marginTop: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+              ✓ Profile saved locally!
+            </p>
+          )}
+        </form>
+
+        {/* Live Preview Card */}
+        <div>
+          <h2 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Live Preview</h2>
+          <div className="glass-card" style={{ padding: '24px', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                backgroundColor: profile.avatarColor,
+                margin: '0 auto 16px auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '2rem',
+                fontWeight: 'bold',
+                color: '#ffffff',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+              }}
+            >
+              {profile.name ? profile.name.charAt(0) : 'U'}
+            </div>
+            <h3 style={{ margin: '0 0 4px 0' }}>{profile.name || 'Your Name'}</h3>
+            <p style={{ color: 'var(--text-muted)', margin: '0 0 16px 0', fontSize: '0.9rem' }}>
+              {profile.handle || '@handle'}
+            </p>
+            <p style={{ background: 'rgba(0,0,0,0.1)', padding: '12px', borderRadius: '8px', fontSize: '0.95rem' }}>
+              {profile.bio || 'No bio provided yet.'}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
